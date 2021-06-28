@@ -1,0 +1,296 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: "Helvetica";
+  height: 100vh;
+  width: 100vw;
+}
+.modal {
+  font-size: large;
+  font-weight: 900;
+  height: 5rem;
+  width: 30rem;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  z-index: 5;
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  text-align: center;
+  padding: 2rem 0;
+  border-radius: 16px;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.9);
+}
+.header {
+  width: 100vw;
+  height: 4rem;
+  background-color: #464eb8;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  font-size: large;
+  font-weight: 900;
+  position: sticky;
+  top: 0%;
+}
+.header__main {
+  padding: 18px 4px;
+  margin: 0 16px;
+}
+.header__main:active,
+.header__main:hover {
+  background-color: #7b83eb;
+}
+.header__options {
+  display: flex;
+  justify-content: space-between;
+}
+.header__option {
+  padding: 16px 16px;
+  margin: 0 16px;
+}
+.header__option:active,
+.header__option:hover {
+  background-color: #7b83eb;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  border: 1px solid black;
+  border-radius: 8px;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 30%;
+  left: calc(50% - 17%);
+  width: 500px;
+  min-width: 276px;
+  height: 50%;
+  background-color: #464eb8;
+  color: #fff;
+}
+.icon__container {
+  margin: 8px;
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+.login__icon {
+  background: #fff url(./assets/loginIcon.png) no-repeat center/contain;
+}
+.login__username {
+  display: flex;
+  padding: 16px 0;
+}
+.login__password {
+  display: flex;
+  padding: 16px 0;
+}
+input {
+  width: 15rem;
+  padding: 8px;
+  margin: 0 8px;
+  border: 1px solid black;
+  outline: none;
+}
+.button {
+  padding: 8px 8px;
+  width: 8rem;
+  margin: 8px;
+  border: 1px solid;
+  border-radius: 8px;
+  background-color: #505ac9;
+  color: #fff;
+  outline: none;
+}
+.button:active,
+.button:hover {
+  background-color: #7b83eb;
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.8);
+  color: #fff;
+}
+.start__icon {
+  background: #fff url(./assets/network.png) no-repeat center/contain;
+}
+.link-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+}
+.input__box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+}
+.link__input {
+  background-color: #fff;
+  height: 3rem;
+  width: 20rem;
+  padding: 8px;
+  color: black;
+  border: 1px solid black;
+  border-radius: 8px;
+  margin: 4px;
+  outline: none;
+}
+.link__copy-icon {
+  background: url("./assets/copy.png") no-repeat center/contain;
+  height: 40px;
+  width: 40px;
+  border: 1px solid white;
+  border-radius: 50%;
+}
+.link__copy-icon:active,
+.link__copy-icon:hover {
+  box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.8);
+}
+.join__icon {
+  background: url("./assets/join.png") no-repeat center/contain;
+}
+.error__icon {
+  background: url("./assets/error.png") no-repeat center/contain;
+}
+
+.meeting__page {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.video__chat {
+  border: 1px solid black;
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.user__video-box {
+  position: relative;
+  left: 68%;
+  background: #fff center/cover;
+  height: 20%;
+  width: 30%;
+  margin: 4px;
+  border: 1px solid black;
+  border-radius: 8px;
+  text-align: center;
+}
+video {
+  object-fit: cover;
+  background-repeat: no-repeat;
+}
+#userVideo {
+  width: 100%;
+  height: 85%;
+}
+.peer__video-box {
+  position: relative;
+  height: 70%;
+  width: 99%;
+  left: 0;
+  margin: 4px;
+  border: 1px solid black;
+  border-radius: 8px;
+  text-align: center;
+}
+#peerVideo {
+  width: 100%;
+  height: 95%;
+}
+.video-detail {
+  padding: 2px 0;
+}
+
+.chat {
+  background-color: #7b83eb;
+  width: 40%;
+  height: 100%;
+}
+.video__controls {
+  display: flex;
+  position: relative;
+  bottom: 0;
+  height: 10%;
+  justify-content: space-evenly;
+  background-color: black;
+  border-radius: 8px;
+  width: 100%;
+}
+.video-icon {
+  height: 60px;
+  width: 60px;
+  background-color: #7b83eb;
+  border: 1px solid black;
+  border-radius: 50%;
+  margin: 4px 0;
+}
+.video__video {
+  background: url("./assets/VideoOn.png") no-repeat center/contain;
+}
+.video__connect {
+  background: url("./assets/disconnect.png") no-repeat center/contain;
+}
+.video__audio {
+  background: url("./assets/unmute.png") no-repeat center/contain;
+}
+
+.chat__enter-box {
+  position: relative;
+  top: 90%;
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: space-around;
+}
+.chat__input-box {
+  width: 80%;
+  height: 3rem;
+  border: 1px solid black;
+  border-radius: 8px;
+  margin: 2px 2px 8px 4px;
+  padding: 4px;
+  outline: none;
+}
+.chat__send {
+  padding: 2px;
+  margin: 4px;
+  height: 3rem;
+  width: 15%;
+}
+.user__msg {
+  position: relative;
+
+  width: 100%;
+  padding: 4px;
+  padding-right: 8px;
+  margin: 4px 0;
+  margin-right: 16px;
+  text-align: right;
+  font-size: large;
+  color: rgb(206, 195, 195);
+  border-radius: 8px;
+}
+.peer__msg {
+  font-size: large;
+  padding: 4px;
+  margin: 4px 0;
+  width: 100%;
+  text-align: left;
+  color: #fff;
+  border-radius: 8px;
+}
+.hidden {
+  display: none;
+}
+.active {
+  background-color: #7b83eb;
+}

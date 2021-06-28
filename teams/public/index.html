@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>teamsClone</title>
+
+    <link href="/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="modal hidden"></div>
+    <header class="header">
+      <div class="header__main active">Microsoft Teams</div>
+      <div class="header__options">
+        <div class="header__option start">Start</div>
+        <div class="header__option join">Join</div>
+      </div>
+    </header>
+
+    <div class="container login">
+      <div class="icon__container login__icon"></div>
+      <div class="login__username">
+        <label>Username</label>
+        <input type="text" name="username" id="username" />
+      </div>
+      <div class="login__password">
+        <label>password</label>
+        <input type="password" name="password" id="password" />
+      </div>
+      <button class="button sign-in">sign in</button>
+    </div>
+
+    <div class="container start__link hidden">
+      <div class="icon__container start__icon"></div>
+      <div class="link-box">
+        <h3>Start an instant Meeting</h3>
+        <div class="input__box">
+          <div class="link__input" id="startInput"></div>
+          <div class="link__copy-icon"></div>
+        </div>
+      </div>
+      <button class="button btn-start">Start</button>
+    </div>
+
+    <div class="container join__link hidden">
+      <div class="icon__container join__icon"></div>
+      <div class="link-box">
+        <h3>Join the meeting Now</h3>
+        <input class="link__input" id="joinInput" />
+      </div>
+      <button class="button btn-join">Join Now</button>
+    </div>
+
+    <div class="container error hidden">
+      <div class="icon__container error__icon"></div>
+      <div class="link-box">
+        <h3>Sign in to join a meeting or to start a new meeting</h3>
+      </div>
+      <button class="button btn-error">Sign In Now!!</button>
+    </div>
+
+    <div class="meeting__page hidden">
+      <div class="video__chat">
+        <div class="user__video-box">
+          <video id="userVideo" muted></video>
+          <div class="video-detail" id="userDetail"></div>
+        </div>
+        <div class="peer__video-box">
+          <video id="peerVideo"></video>
+          <div class="video-detail" id="peerDetail"></div>
+        </div>
+
+        <div class="video__controls">
+          <div class="video__video video-icon"></div>
+          <div class="video__connect video-icon"></div>
+          <div class="video__audio video-icon"></div>
+        </div>
+      </div>
+      <div class="chat">
+        <div class="chat__enter-box">
+          <input
+            type="text"
+            placeholder="send your message"
+            class="chat__input-box"
+          />
+          <button class="button chat__send">SEND</button>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.1.0/uuidv4.min.js"></script>
+  <script type="module" src="./controller/contoller.js"></script>
+</html>

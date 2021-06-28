@@ -1,0 +1,20 @@
+{
+  "name": "video-chat",
+  "version": "1.0.0",
+  "description": "teams-clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "Akshita Singh",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7",
+    "socket.io": "^3.0.3",
+    "socket.io-client": "^4.1.2",
+    "uuid": "^8.3.2",
+    "uuid4": "^2.0.2"
+  }
+}
