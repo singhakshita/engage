@@ -4,16 +4,26 @@ class StartView extends MainView {
   _startLinkContainer = document.getElementById("startInput");
   _joinLinkContainer = document.getElementById("joinInput");
 
-  btnHandler(startMeeting) {
+  btnHandler(startHandler, setChatPage) {
     this._startButton.addEventListener("click", () => {
       const id = document.getElementById("startInput").textContent;
       this.setMeetingPage();
-      startMeeting(id);
+      startHandler(id, false);
     });
     this._joinButton.addEventListener("click", () => {
       const id = document.getElementById("joinInput").value;
       this.setMeetingPage();
-      startMeeting(id);
+      startHandler(id, false);
+    });
+    this._startChannelBtn.addEventListener("click", () => {
+      const id = document.getElementById("startInput").textContent;
+      this.setChatPage(setChatPage);
+      startHandler(id, true);
+    });
+    this._joinChannelBtn.addEventListener("click", () => {
+      const id = document.getElementById("joinInput").value;
+      this.setChatPage(setChatPage);
+      startHandler(id, true);
     });
   }
 
@@ -50,6 +60,11 @@ class StartView extends MainView {
   }
   setPeerName(name) {
     document.getElementById("peerDetail").textContent = name;
+  }
+  setAccountHolder(name) {
+    document.querySelector(
+      ".accountHolder"
+    ).textContent = `Signed In As :${name}`;
   }
 }
 

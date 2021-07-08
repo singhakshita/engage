@@ -1,94 +1,35 @@
 import * as modal from "../modal/modal.js";
-
 import HeaderView from "../view/headerView.js";
 import startView from "../view/startView.js";
 import StartView from "../view/startView.js";
 import ControlsView from "../view/ControlsView.js";
 import MessageView from "../view/MessageView.js";
+import rtcHelper from "./rtcHelper.js";
 
-const socket = io("/");
-let rtcPeerConnection;
-
-const onIceCandidateFunc = (event) => {
-  if (event.candidate) {
-    socket.emit("candidate", event.candidate, modal.state.roomName);
-  }
-};
-const socketOnReady = () => {
-  if (modal.state.creator) {
-    rtcPeerConnection = new RTCPeerConnection(modal.iceServers);
-    rtcPeerConnection.onicecandidate = onIceCandidateFunc;
-    rtcPeerConnection.ontrack = StartView.setPeerStream;
-    rtcPeerConnection.addTrack(
-      modal.state.userStream.getTracks()[0],
-      modal.state.userStream
-    );
-    rtcPeerConnection.addTrack(
-      modal.state.userStream.getTracks()[1],
-      modal.state.userStream
-    );
-    rtcPeerConnection
-      .createOffer()
-      .then((offer) => {
-        rtcPeerConnection.setLocalDescription(offer);
-        socket.emit("offer", offer, modal.state.roomName);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-};
-const socketOnCandidate = (candidate) => {
-  let icecandidate = new RTCIceCandidate(candidate);
-  rtcPeerConnection.addIceCandidate(icecandidate);
-};
-const socketOnOffer = (offer) => {
-  if (!modal.state.creator) {
-    rtcPeerConnection = new RTCPeerConnection(modal.iceServers);
-    rtcPeerConnection.onicecandidate = onIceCandidateFunc;
-    rtcPeerConnection.ontrack = StartView.setPeerStream;
-    rtcPeerConnection.addTrack(
-      modal.state.userStream.getTracks()[0],
-      modal.state.userStream
-    );
-    rtcPeerConnection.addTrack(
-      modal.state.userStream.getTracks()[1],
-      modal.state.userStream
-    );
-    rtcPeerConnection.setRemoteDescription(offer);
-    rtcPeerConnection
-      .createAnswer()
-      .then((answer) => {
-        rtcPeerConnection.setLocalDescription(answer);
-        socket.emit("answer", answer, modal.state.roomName);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-};
-const socketOnAnswer = (answer) => {
-  rtcPeerConnection.setRemoteDescription(answer);
-};
-const setUserStream = (stream) => {
-  modal.state.userStream = stream;
-};
-const emitReadyEvent = (id) => {
-  socket.emit("ready", id);
-};
+let socket;
+socket = rtcHelper.getSocket();
 
 socket.on("created", () => {
-  modal.state.creator = true;
-  StartView.setAudioVideoStream(setUserStream, null);
+  if (modal.state.state) {
+    socket.emit("name", modal.state.roomName, modal.state.userName);
+  } else {
+    modal.state.creator = true;
+    StartView.setAudioVideoStream(rtcHelper.setUserStream, null);
+  }
 });
 socket.on("joined", () => {
-  modal.state.creator = false;
-  startView.setAudioVideoStream(setUserStream, emitReadyEvent);
+  if (!modal.state.state) {
+    modal.state.creator = false;
+    startView.setAudioVideoStream(
+      rtcHelper.setUserStream,
+      rtcHelper.emitReadyEvent
+    );
+  }
   socket.emit("name", modal.state.roomName, modal.state.userName);
 });
 
 socket.on("ready", () => {
-  socketOnReady();
+  rtcHelper.socketOnReady();
   socket.emit("name", modal.state.roomName, modal.state.userName);
 });
 
@@ -97,17 +38,55 @@ socket.on("name", (peerName) => {
   StartView.setPeerName(peerName);
 });
 socket.on("candidate", (candidate) => {
-  socketOnCandidate(candidate);
+  rtcHelper.socketOnCandidate(candidate);
 });
 
 socket.on("offer", (offer) => {
-  socketOnOffer(offer);
+  rtcHelper.socketOnOffer(offer);
 });
 
 socket.on("answer", (answer) => {
-  socketOnAnswer(answer);
+  rtcHelper.socketOnAnswer(answer);
+});
+socket.on("message", (msg, roomId) => {
+  if (modal.state.state) {
+    MessageView.receiveMsgViaChannel(msg, roomId);
+  } else {
+    MessageView.showPeerMsg(msg);
+  }
+});
+socket.on("leave", () => {
+  ControlsView.onPeerDisconnect(modal.state.peerName);
 });
 
+const broadcastMessage = (msg, roomId) => {
+  if (roomId === "") {
+    roomId = modal.state.roomName;
+  }
+  socket.emit("message", msg, roomId, modal.state.userName);
+};
+
+const disconnectHandler = () => {
+  socket.emit("leave", modal.state.roomName);
+  modal.state.state = false;
+};
+const callHandler = (id, status) => {
+  modal.state.state = false;
+  modal.state.roomName = id;
+  getParticularData(id);
+  if (status === 0) {
+    modal.state.creator = true;
+    StartView.setAudioVideoStream(rtcHelper.setUserStream, null);
+    StartView.setuserName(modal.state.userName);
+  } else {
+    modal.state.creator = false;
+    startView.setAudioVideoStream(
+      rtcHelper.setUserStream,
+      rtcHelper.emitReadyEvent
+    );
+    socket.emit("name", modal.state.roomName, modal.state.userName);
+  }
+};
 const audioHandler = (isAudio) => {
   let audioMode = modal.state.userStream.getTracks()[0];
   audioMode.enabled = isAudio;
@@ -116,61 +95,74 @@ const videoHandler = (isVideo) => {
   let videoMode = modal.state.userStream.getTracks()[1];
   videoMode.enabled = isVideo;
 };
-const startHandler = (id) => {
+const startHandler = (id, isChat) => {
   modal.state.roomName = id;
+  modal.state.state = isChat;
   socket.emit("join", modal.state.roomName);
   StartView.setuserName(modal.state.userName);
 };
 
-const headerViewHandler = (data) => {
+const setSignedInStatus = (data) => {
   if (data != null) {
-    modal.state.signedIn = true;
-    modal.state.userName = data.name;
-    modal.state.password = data.password;
-  }
-  if (modal.state.signedIn) {
-    modal.state.userName = data.name;
-    const startId = modal.getMeetingLink();
-    HeaderView.setStartPage(startId);
+    modal.signInStatus(data.name, data.password).then((data) => {
+      if (data.status) {
+        modal.state.signedIn = true;
+        modal.state.userName = data.name;
+        const startId = modal.getMeetingLink();
+        StartView.setAccountHolder(data.name);
+        HeaderView.setStartPage(startId);
+      }
+      HeaderView.showModal(data.err);
+    });
   }
 };
 const getSignedInStatus = (btn) => {
   if (modal.state.signedIn) {
     if (btn == 0) {
       HeaderView.setStartPage(modal.getMeetingLink());
+      modal.state.state = false;
+    } else if (btn == 2) {
+      MessageView.setChatPage(setChatPage);
+      modal.state.state = true;
     } else {
       HeaderView.setJoinPage();
+      modal.state.state = false;
     }
   } else {
     HeaderView.setErrorPage();
+    modal.state.state = false;
   }
 };
-socket.on("message", (msg) => {
-  MessageView.showPeerMsg(msg);
-  console.log("recieved message", msg);
-});
-
-const broadcastMessage = (msg) => {
-  socket.emit("message", msg, modal.state.roomName);
-  console.log("emitting", msg);
+const getRoomId = () => {
+  return modal.state.roomName;
 };
 
-socket.on("leave", () => {
-  ControlsView.onPeerDisconnect(modal.state.peerName);
-});
-const disconnectHandler = () => {
-  socket.emit("leave", modal.state.roomName);
+const setChatPage = async function () {
+  modal.state.state = true;
+  let data = await modal.getAllRooms();
+  data = modal.editData(data);
+  MessageView.displayChatCard(data);
 };
-
+const getParticularData = async function (id) {
+  let data = await modal.getParticularRoomData(id);
+  data = modal.editMsg(data[0]);
+  if (!modal.state.state) MessageView.meetingDisplayChat(data);
+  else MessageView.displayEachChat(data);
+};
 const init = () => {
-  HeaderView.signInlistner(headerViewHandler);
+  HeaderView.signInlistner(setSignedInStatus);
   HeaderView.copyHandler();
   HeaderView.headerListner(getSignedInStatus);
   HeaderView.errorBtn();
-  StartView.btnHandler(startHandler);
+  StartView.btnHandler(startHandler, setChatPage);
   ControlsView.controlAudio(audioHandler);
   ControlsView.controlVideo(videoHandler);
+  ControlsView.infoDisplay(getRoomId);
   MessageView.sendMsg(broadcastMessage);
   ControlsView.userDisconnectHandler(disconnectHandler);
+  MessageView.chatHeaderHandler(getSignedInStatus);
+  MessageView.chatCardListner(getParticularData);
+  MessageView.sendMsgViaChannel(broadcastMessage);
+  MessageView.CallBtnListner(callHandler);
 };
 init();

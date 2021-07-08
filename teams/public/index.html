@@ -10,9 +10,11 @@
     <div class="modal hidden"></div>
     <header class="header">
       <div class="header__main active">Microsoft Teams</div>
+      <div class="header__main accountHolder"></div>
       <div class="header__options">
         <div class="header__option start">Start</div>
         <div class="header__option join">Join</div>
+        <div class="header__option chatHeader">Chat</div>
       </div>
     </header>
 
@@ -38,7 +40,12 @@
           <div class="link__copy-icon"></div>
         </div>
       </div>
-      <button class="button btn-start">Start</button>
+      <div class="button__panel">
+        <button class="button btn-start start-meet">Start Video Call</button>
+        <button class="button btn-start start-channel">
+          Start a Chat Channel
+        </button>
+      </div>
     </div>
 
     <div class="container join__link hidden">
@@ -47,7 +54,12 @@
         <h3>Join the meeting Now</h3>
         <input class="link__input" id="joinInput" />
       </div>
-      <button class="button btn-join">Join Now</button>
+      <div class="button__panel">
+        <button class="button btn-join join-meet">Join Video Call</button>
+        <button class="button btn-join join-channel">
+          Join the chat Channel
+        </button>
+      </div>
     </div>
 
     <div class="container error hidden">
@@ -73,9 +85,11 @@
           <div class="video__video video-icon"></div>
           <div class="video__connect video-icon"></div>
           <div class="video__audio video-icon"></div>
+          <div class="video__info video-icon"></div>
         </div>
       </div>
       <div class="chat">
+        <div class="chat__msgBox"></div>
         <div class="chat__enter-box">
           <input
             type="text"
@@ -84,6 +98,40 @@
           />
           <button class="button chat__send">SEND</button>
         </div>
+      </div>
+    </div>
+
+    <div class="chat__channel hidden">
+      <div class="chat__items">
+        <div class="chat__item-card" data-idx="0">
+          <div class="chat__item-card-id">roomId</div>
+          <div class="chat__item-title">
+            <div class="chat__item-card-dp"></div>
+            <div class="chat__item-detail">
+              <div class="chat__item-card-name">username</div>
+              <div class="chat__item-card-status">
+                <span class="chat__item-card-msg">msg</span>
+                <div class="chat__item-card-newMsg"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat__item">
+        <header class="chat__item-header">
+          <div class="chat__header-item peername">PeerName</div>
+          <div class="chat__header-item channelId">Channel Id</div>
+          <div class="chat__header-item startcall">Start Call</div>
+          <div class="chat__header-item joincall">Join Call</div>
+        </header>
+        <div class="chat__item-msg">
+          <div class="peer__msg">hello this is peer</div>
+          <div class="user__msg">hellow from user</div>
+        </div>
+        <footer class="chat__item-footer">
+          <input type="text" class="chat__channel-input" />
+          <button class="button chat__channel-btn">Send</button>
+        </footer>
       </div>
     </div>
   </body>

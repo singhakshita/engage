@@ -4,6 +4,7 @@ class ControlsView extends MainView {
   _videoButton = document.querySelector(".video__video");
   _leaveButton = document.querySelector(".video__connect");
   _audioButton = document.querySelector(".video__audio");
+  _infoButton = document.querySelector(".video__info");
 
   _audioFlag = true;
   _videoFlag = true;
@@ -33,12 +34,18 @@ class ControlsView extends MainView {
       }
     });
   }
+  infoDisplay(handler) {
+    this._infoButton.addEventListener("click", () => {
+      const id = handler();
+      this.showModal(`Meeting id is : ${id}`);
+    });
+  }
 
   userDisconnectHandler(handler) {
     this._leaveButton.addEventListener("click", () => {
       this.addClass(this._meetingPage, "hidden");
       this.removeClass(this._header, "hidden");
-      this.removeClass(this._login, "hidden");
+      this.removeClass(this._start, "hidden");
       this.addClass(this._mainHeader, "active");
       handler();
     });
@@ -47,13 +54,7 @@ class ControlsView extends MainView {
     const peerVideo = document.getElementById("peerVideo");
     peerVideo.srcObject.getTracks()[0].stop();
     peerVideo.srcObject.getTracks()[1].stop();
-
-    this.removeClass(this._modal, "hidden");
-    this._modal.textContent = `Meeting Ended By ${name}`;
-
-    setTimeout(() => {
-      this.addClass(this._modal, "hidden");
-    }, 5000);
+    this.showModal(`Meeting ended by ${name}`);
   }
 }
 

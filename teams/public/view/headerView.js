@@ -27,13 +27,6 @@ class HeaderView extends MainView {
     });
   }
 
-  setErrorPage() {
-    this.clearContiner();
-    this.activeClass();
-    this.addClass(this._mainHeader, "active");
-    this.removeClass(this._errorBox, "hidden");
-  }
-
   errorBtn() {
     this._errorBtn.addEventListener("click", () => {
       this.clearContiner();

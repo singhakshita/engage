@@ -14,14 +14,18 @@ export default class MainView {
   _mainHeader = document.querySelector(".header__main");
   _startHeader = document.querySelector(".start");
   _joinHeader = document.querySelector(".join");
+  _chatHeader = document.querySelector(".chatHeader");
 
   _startButton = document.querySelector(".btn-start");
   _joinButton = document.querySelector(".btn-join");
+  _startChannelBtn = document.querySelector(".start-channel");
+  _joinChannelBtn = document.querySelector(".join-channel");
 
   _errorBox = document.querySelector(".error");
   _errorBtn = document.querySelector(".btn-error");
 
   _meetingPage = document.querySelector(".meeting__page");
+  _chatChannel = document.querySelector(".chat__channel");
 
   _userVideo = document.getElementById("userVideo");
   _peerVideo = document.getElementById("peerVideo");
@@ -44,16 +48,39 @@ export default class MainView {
     this.addClass(this._join, "hidden");
     this.addClass(this._errorBox, "hidden");
     this.addClass(this._meetingPage, "hidden");
+    this.addClass(this._chatChannel, "hidden");
   }
   activeClass() {
     this.removeClass(this._mainHeader, "active");
     this.removeClass(this._startHeader, "active");
     this.removeClass(this._joinHeader, "active");
+    this.removeClass(this._chatHeader, "active");
   }
 
   setMeetingPage() {
     this.clearContiner();
     this.addClass(this._header, "hidden");
     this.removeClass(this._meetingPage, "hidden");
+  }
+
+  setErrorPage() {
+    this.clearContiner();
+    this.activeClass();
+    this.addClass(this._mainHeader, "active");
+    this.removeClass(this._errorBox, "hidden");
+  }
+  setChatPage(setChatpage) {
+    this.clearContiner();
+    this.removeClass(this._chatChannel, "hidden");
+    setTimeout(setChatpage, 3000);
+  }
+
+  showModal(msg) {
+    this.removeClass(this._modal, "hidden");
+    this._modal.textContent = msg;
+
+    setTimeout(() => {
+      this.addClass(this._modal, "hidden");
+    }, 5000);
   }
 }
