@@ -6,6 +6,7 @@ import ControlsView from "../view/ControlsView.js";
 import MessageView from "../view/MessageView.js";
 import rtcHelper from "./rtcHelper.js";
 
+
 let socket;
 socket = rtcHelper.getSocket();
 

@@ -1,7 +1,6 @@
 let users = [];
 let accounts = [{ id: "microsoft", password: "teams" }];
 const userExists = (id, name) => {
-  let index;
   const data = users.find((elem, idx) => {
     if (elem.roomId === id) {
       index = idx;
@@ -13,6 +12,7 @@ const userExists = (id, name) => {
   }
   return data;
 };
+
 const editUser = (name, id) => {
   const data = userExists(id, name);
 

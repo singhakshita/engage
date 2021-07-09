@@ -53,6 +53,7 @@ export const getAllRooms = async function () {
   const url = `http://localhost:3000/chats?${params.toString()}`;
   const res = await fetch(url);
   const data = await res.json();
+  console.log(data);
   return data;
 };
 
@@ -61,5 +62,6 @@ export const getParticularRoomData = async function (roomName) {
   const url = `http://localhost:3000/id?${params.toString()}`;
   const res = await fetch(url);
   const data = await res.json();
+  console.log(data);
   return data;
 };
