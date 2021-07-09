@@ -8,6 +8,7 @@ export const state = {
   peerName: "",
   allRooms: [],
   state: false, //call = false chat = true;
+  connected: "",
 };
 
 export const iceServers = {
@@ -16,7 +17,11 @@ export const iceServers = {
     { urls: "stun:stun.l.google.com:19302" },
   ],
 };
-
+export const isConnected = (id) => {
+  if (state.connected === id) {
+    return true;
+  } else return false;
+};
 export const getMeetingLink = () => {
   let id = uuidv4();
   return id;
@@ -53,7 +58,7 @@ export const getAllRooms = async function () {
   const url = `http://localhost:3000/chats?${params.toString()}`;
   const res = await fetch(url);
   const data = await res.json();
-  console.log(data);
+
   return data;
 };
 
@@ -62,6 +67,6 @@ export const getParticularRoomData = async function (roomName) {
   const url = `http://localhost:3000/id?${params.toString()}`;
   const res = await fetch(url);
   const data = await res.json();
-  console.log(data);
+
   return data;
 };

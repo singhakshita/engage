@@ -97,8 +97,6 @@ class MessageView extends MainView {
       document
         .querySelector(".chat__item-msg")
         .insertAdjacentHTML("beforeend", html);
-    } else {
-      console.log(document.getElementById(roomName));
     }
   }
 

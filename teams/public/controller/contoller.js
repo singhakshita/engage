@@ -6,11 +6,11 @@ import ControlsView from "../view/ControlsView.js";
 import MessageView from "../view/MessageView.js";
 import rtcHelper from "./rtcHelper.js";
 
-
 let socket;
 socket = rtcHelper.getSocket();
 
 socket.on("created", () => {
+  console.log("created");
   if (modal.state.state) {
     socket.emit("name", modal.state.roomName, modal.state.userName);
   } else {
@@ -19,6 +19,7 @@ socket.on("created", () => {
   }
 });
 socket.on("joined", () => {
+  console.log("joined");
   if (!modal.state.state) {
     modal.state.creator = false;
     startView.setAudioVideoStream(
@@ -74,6 +75,11 @@ const disconnectHandler = () => {
 const callHandler = (id, status) => {
   modal.state.state = false;
   modal.state.roomName = id;
+  if (!modal.isConnected(id)) {
+    socket.emit("join", id);
+    getParticularData(id);
+    return;
+  }
   getParticularData(id);
   if (status === 0) {
     modal.state.creator = true;
@@ -99,7 +105,9 @@ const videoHandler = (isVideo) => {
 const startHandler = (id, isChat) => {
   modal.state.roomName = id;
   modal.state.state = isChat;
+  modal.state.connected = id;
   socket.emit("join", modal.state.roomName);
+  console.log("emitting join");
   StartView.setuserName(modal.state.userName);
 };
 

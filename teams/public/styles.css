@@ -182,12 +182,11 @@ input {
   flex-direction: column;
 }
 .user__video-box {
-  position: relative;
-  left: 68%;
   background: #fff center/cover;
   height: 20%;
   width: 30%;
   margin: 4px;
+  align-self: flex-end;
   border: 1px solid black;
   border-radius: 8px;
   text-align: center;
@@ -201,10 +200,9 @@ video {
   height: 85%;
 }
 .peer__video-box {
-  position: relative;
   height: 70%;
   width: 99%;
-  left: 0;
+
   margin: 4px;
   border: 1px solid black;
   border-radius: 8px;
@@ -220,8 +218,7 @@ video {
 
 .video__controls {
   display: flex;
-  position: relative;
-  bottom: 0;
+
   height: 10%;
   justify-content: space-evenly;
   background-color: black;
@@ -255,36 +252,36 @@ video {
   display: flex;
   flex-direction: column;
 }
-.chat__enter-box {
-  position: absolute;
-  top: 93%;
+.chat__msgBox {
+  height: 90%;
+  width: 100%;
+  overflow-y: scroll;
   display: flex;
-  width: 30%;
+  flex-direction: column;
+}
+.chat__enter-box {
+  display: flex;
+  width: 100%;
   height: 10%;
   justify-content: space-between;
+  align-items: center;
 }
 .chat__input-box {
   width: 80%;
   height: 3rem;
   border: 1px solid black;
   border-radius: 8px;
-  margin: 2px 2px 8px 4px;
+
   padding: 8px;
   outline: none;
 }
 .chat__send {
   padding: 2px;
-  margin: 4px;
+
   height: 3rem;
   width: 15%;
 }
-.chat__msgBox {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-}
+
 .user__msg {
   background-color: #1a228a;
   width: fit-content;
