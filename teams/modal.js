@@ -55,7 +55,10 @@ const userHandler = (arr, id, name) => {
   } else {
     const db = getDb();
     db.collection("users")
-      .updateOne({ roomId: id }, { $set: { peername: name } })
+      .updateOne(
+        { roomId: id, peername: "Nobody has joined the channel yet" },
+        { $set: { peername: name } }
+      )
       .then((res) => console.log("updated"))
       .catch((err) => console.log(err));
   }

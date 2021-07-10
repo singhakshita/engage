@@ -150,10 +150,12 @@ const setChatPage = async function () {
   modal.state.state = true;
   let data = await modal.getAllRooms();
   data = modal.editData(data);
+  modal.editMsg(data[data.length - 1]);
   MessageView.displayChatCard(data);
 };
 const getParticularData = async function (id) {
   let data = await modal.getParticularRoomData(id);
+  data = modal.editData(data);
   data = modal.editMsg(data[0]);
   if (!modal.state.state) MessageView.meetingDisplayChat(data);
   else MessageView.displayEachChat(data);

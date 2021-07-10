@@ -72,7 +72,7 @@ export default class MainView {
   setChatPage(setChatpage) {
     this.clearContiner();
     this.removeClass(this._chatChannel, "hidden");
-    setTimeout(setChatpage, 3000);
+    setTimeout(setChatpage, 1000);
   }
 
   showModal(msg) {
