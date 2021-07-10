@@ -2,9 +2,10 @@ const express = require("express");
 const socket = require("socket.io");
 const app = express();
 
-const mongoConnect = require("./mongo").mongoConnect;
-const asyncHelper = require("./asynchelper");
-const modal = require("./modal");
+const mongoConnect = require("./modalServer/mongo").mongoConnect;
+const asyncHelper = require("./modalServer/asynchelper");
+const modal = require("./modalServer/modal");
+
 app.use(express.static("public"));
 
 app.use((req, res, next) => {
