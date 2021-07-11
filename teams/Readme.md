@@ -1,15 +1,16 @@
-#About Me
+# About Me
+
 Hi :wave: I am Akshita Singh
 Prefinal Year Student of **Indira Gandhi Delhi Technical University For Women** persuing **B.Tech** in **Electrical and Communication Engineering** interesting in **\*Web Development\***
 
-#The Project: Microsoft Teams Clone
+# The Project: Microsoft Teams Clone
 
 1. The mandatory functionality
    - creating an application where atleast two people can have FaceTime.
 2. The adapt phase
    - Chat feature that should extend before and after the call
 
-#Features I Implemented
+# Features I Implemented
 
 1. Authentication
 
@@ -30,7 +31,7 @@ Prefinal Year Student of **Indira Gandhi Delhi Technical University For Women** 
 6. Meeting info option
 7. Meeting disconnect feature
 
-##packages and Librararies used:
+## packages and Librararies used:
 
 1. Node and express for creating server
 2. webRTC for sharing audio video
@@ -39,19 +40,21 @@ Prefinal Year Student of **Indira Gandhi Delhi Technical University For Women** 
 5. mongodb for database
 6. heroku cli for hosting
 
-##The Project structure :
+## The Project structure :
+
 Database : Mongodb
 frontend : JavaScript
 backend : Node and express.js
 
--code structure :
--client side:
-following the MVC pattern : Modal Controller views to organise files and folder
-Modal : gets and refines data from server (modal.js)
-Controller : all client socket connections , gets data from modal and commands views to render it (controller.js)
-\_ (rtcHelper.js) stores all functions related to webRTC.
-Views: renders all views
+1. code structure :
 
--server side :
--index.js : holds the server code.
--modalServer : is the modal folder for the server , reacts with mongodb and feteches data.
+- client side:
+  following the MVC pattern : Modal Controller views to organise files and folder
+- Modal : gets and refines data from server (modal.js)
+- Controller : all client socket connections , gets data from modal and commands views to render it (controller.js)
+  \_ (rtcHelper.js) stores all functions related to webRTC.
+- Views: renders all views
+
+- server side :
+- index.js : holds the server code.
+- modalServer : is the modal folder for the server , reacts with mongodb and feteches data.
