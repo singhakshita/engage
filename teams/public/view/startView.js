@@ -4,6 +4,7 @@ class StartView extends MainView {
   _startLinkContainer = document.getElementById("startInput");
   _joinLinkContainer = document.getElementById("joinInput");
 
+  // start or join channel or call button listners
   btnHandler(startHandler, setChatPage) {
     this._startButton.addEventListener("click", () => {
       const id = document.getElementById("startInput").textContent;

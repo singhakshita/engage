@@ -1,3 +1,4 @@
+// parent class of all classes holds reusable functions
 export default class MainView {
   _header = document.querySelector(".header");
 

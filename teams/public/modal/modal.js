@@ -10,7 +10,9 @@ export const state = {
   state: false, //call = false chat = true;
   connected: "",
 };
-
+export const getRoomId = () => {
+  return modal.state.roomName;
+};
 export const iceServers = {
   iceServers: [
     { urls: "stun:stun.services.mozilla.com" },

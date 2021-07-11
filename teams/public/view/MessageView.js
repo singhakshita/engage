@@ -12,6 +12,7 @@ class MessageView extends MainView {
   _joinCall = document.querySelector(".joincall");
   _StartCall = document.querySelector(".startcall");
 
+  //chat button listner
   chatHeaderHandler(setPageHandler) {
     this._chatHeader.addEventListener("click", () => {
       setPageHandler(2);
@@ -19,7 +20,7 @@ class MessageView extends MainView {
       this.addClass(this._chatHeader, "active");
     });
   }
-
+// displays all previous channel logs
   displayChatCard(data) {
     if (data.length == 0) return;
     this._chatItems.innerHTML = "";
@@ -45,6 +46,7 @@ class MessageView extends MainView {
     });
     this.displayEachChat(data[data.length - 1]);
   }
+  // event listner on each card
   chatCardListner(getDataHandler) {
     this._chatList.addEventListener("click", (event) => {
       const targetElem = event.target.closest(".chat__item-card");
@@ -53,16 +55,19 @@ class MessageView extends MainView {
       }
     });
   }
+  // displays data of a particular room
   displayEachChat(data) {
     document.querySelector(".channelId").textContent = data.roomId;
     document.querySelector(".peername").textContent = data.peername;
     const container = document.querySelector(".chat__item-msg");
     this.insertMessages(container, data);
   }
+  // displays previous chats on meeting page
   meetingDisplayChat(data) {
     const container = document.querySelector(".chat__msgBox");
     this.insertMessages(container, data);
   }
+
   insertMessages(container, data) {
     container.innerHTML = "";
     data.messages.forEach((elem) => {
@@ -127,16 +132,17 @@ class MessageView extends MainView {
     return `<div class="user__msg">${msg}</div>`;
   }
 
+  // start or join call button listner on chat channel
   CallBtnListner(callHandler) {
     this._StartCall.addEventListener("click", () => {
       const id = document.querySelector(".channelId").textContent;
       this.setMeetingPage();
-      callHandler(id, 0);
+      callHandler(id, 0);  // 0: start call
     });
     this._joinCall.addEventListener("click", () => {
       const id = document.querySelector(".channelId").textContent;
       this.setMeetingPage();
-      callHandler(id, 1);
+      callHandler(id, 1);  // 1: for join call
     });
   }
 }

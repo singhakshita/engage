@@ -1,25 +1,29 @@
 import * as modal from "../modal/modal.js";
+
+import rtcHelper from "./rtcHelper.js";
+
 import HeaderView from "../view/headerView.js";
 import startView from "../view/startView.js";
 import StartView from "../view/startView.js";
 import ControlsView from "../view/ControlsView.js";
 import MessageView from "../view/MessageView.js";
-import rtcHelper from "./rtcHelper.js";
 
 let socket;
 socket = rtcHelper.getSocket();
 
+// after socket conncetion is created
 socket.on("created", () => {
-  console.log("created");
+  // a
   if (modal.state.state) {
+    // state = true = chat channel : name is emitted
     socket.emit("name", modal.state.roomName, modal.state.userName);
   } else {
-    modal.state.creator = true;
+    modal.state.creator = true; //state = false = video channel
     StartView.setAudioVideoStream(rtcHelper.setUserStream, null);
   }
 });
+//when someone joins the same room
 socket.on("joined", () => {
-  console.log("joined");
   if (!modal.state.state) {
     modal.state.creator = false;
     startView.setAudioVideoStream(
@@ -29,16 +33,17 @@ socket.on("joined", () => {
   }
   socket.emit("name", modal.state.roomName, modal.state.userName);
 });
-
+// peer on ready
 socket.on("ready", () => {
   rtcHelper.socketOnReady();
-  socket.emit("name", modal.state.roomName, modal.state.userName);
+  socket.emit("name", modal.state.roomName, modal.state.userName); // the creator's name is emitted
 });
 
 socket.on("name", (peerName) => {
   modal.state.peerName = peerName;
   StartView.setPeerName(peerName);
 });
+// ICE candidates are shared
 socket.on("candidate", (candidate) => {
   rtcHelper.socketOnCandidate(candidate);
 });
@@ -73,14 +78,16 @@ const disconnectHandler = () => {
   modal.state.state = false;
 };
 const callHandler = (id, status) => {
+  //status : 0 : the person starts the call || 1: if person joins the call
   modal.state.state = false;
   modal.state.roomName = id;
   if (!modal.isConnected(id)) {
+    //if the socket is not already  connected
     socket.emit("join", id);
     getParticularData(id);
     return;
   }
-  getParticularData(id);
+  getParticularData(id); // gets previous chats and render it in the view
   if (status === 0) {
     modal.state.creator = true;
     StartView.setAudioVideoStream(rtcHelper.setUserStream, null);
@@ -94,14 +101,17 @@ const callHandler = (id, status) => {
     socket.emit("name", modal.state.roomName, modal.state.userName);
   }
 };
+// audio mute unmute
 const audioHandler = (isAudio) => {
   let audioMode = modal.state.userStream.getTracks()[0];
   audioMode.enabled = isAudio;
 };
+//video on and off
 const videoHandler = (isVideo) => {
   let videoMode = modal.state.userStream.getTracks()[1];
   videoMode.enabled = isVideo;
 };
+// start or join channel or call handler
 const startHandler = (id, isChat) => {
   modal.state.roomName = id;
   modal.state.state = isChat;
@@ -111,6 +121,7 @@ const startHandler = (id, isChat) => {
   StartView.setuserName(modal.state.userName);
 };
 
+// handles authentication
 const setSignedInStatus = (data) => {
   if (data != null) {
     modal.signInStatus(data.name, data.password).then((data) => {
@@ -125,6 +136,8 @@ const setSignedInStatus = (data) => {
     });
   }
 };
+
+// handles UI based on authentication
 const getSignedInStatus = (btn) => {
   if (modal.state.signedIn) {
     if (btn == 0) {
@@ -142,10 +155,8 @@ const getSignedInStatus = (btn) => {
     modal.state.state = false;
   }
 };
-const getRoomId = () => {
-  return modal.state.roomName;
-};
 
+// sets chat Page UI
 const setChatPage = async function () {
   modal.state.state = true;
   let data = await modal.getAllRooms();
@@ -153,6 +164,7 @@ const setChatPage = async function () {
   modal.editMsg(data[data.length - 1]);
   MessageView.displayChatCard(data);
 };
+//gets all chat info of particular room
 const getParticularData = async function (id) {
   let data = await modal.getParticularRoomData(id);
   data = modal.editData(data);
@@ -161,6 +173,7 @@ const getParticularData = async function (id) {
   else MessageView.displayEachChat(data);
 };
 const init = () => {
+  // setting event listners  : following subscriber listner pattern
   HeaderView.signInlistner(setSignedInStatus);
   HeaderView.copyHandler();
   HeaderView.headerListner(getSignedInStatus);
@@ -168,7 +181,7 @@ const init = () => {
   StartView.btnHandler(startHandler, setChatPage);
   ControlsView.controlAudio(audioHandler);
   ControlsView.controlVideo(videoHandler);
-  ControlsView.infoDisplay(getRoomId);
+  ControlsView.infoDisplay(modal.getRoomId);
   MessageView.sendMsg(broadcastMessage);
   ControlsView.userDisconnectHandler(disconnectHandler);
   MessageView.chatHeaderHandler(getSignedInStatus);

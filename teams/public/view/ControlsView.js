@@ -34,6 +34,7 @@ class ControlsView extends MainView {
       }
     });
   }
+  // displays meeting information
   infoDisplay(handler) {
     this._infoButton.addEventListener("click", () => {
       const id = handler();
