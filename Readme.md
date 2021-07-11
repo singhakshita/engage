@@ -48,13 +48,29 @@ backend : Node and express.js
 
 1. code structure :
 
-- client side:
-  following the MVC pattern : Modal Controller views to organise files and folder
+client side:
+following the MVC pattern : Modal Controller views to organise files and folder
+
 - Modal : gets and refines data from server (modal.js)
 - Controller : all client socket connections , gets data from modal and commands views to render it (controller.js)
   \_ (rtcHelper.js) stores all functions related to webRTC.
 - Views: renders all views
 
-- server side :
+server side :
+
 - index.js : holds the server code.
 - modalServer : is the modal folder for the server , reacts with mongodb and feteches data.
+
+## The Agile methodology
+
+Breaking the project into delieverable chunks,
+
+1. creating a server and RTC connection so that two people can share audio video (completed the mandatory criteria).
+2. adding a id password interface ,UI for joining and starting the meet.
+3. chat feature that exists while the meeting is going.
+   Adapt phase
+4. extended the chat feature to end call chat.
+5. added a text file database for the timebeing and stored user details and chats.
+6. implemented before call chat by giving option to start or join channel.
+7. adding **mongodb** database
+ 
