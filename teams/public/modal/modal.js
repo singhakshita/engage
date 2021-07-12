@@ -11,7 +11,7 @@ export const state = {
   connected: "",
 };
 export const getRoomId = () => {
-  return modal.state.roomName;
+  return state.roomName;
 };
 export const iceServers = {
   iceServers: [
