@@ -65,9 +65,9 @@ server side :
 - index.js : holds the server code.
 - modalServer : is the modal folder for the server , reacts with mongodb and feteches data.
 
-## the realtime whiteboard
+## The Realtime Whiteboard
 
-    this in itself is an extensive feature , you can change the size and color of pencil , erase  ,undo redo , download the content ,and write text on sticky note.
+this in itself is an extensive feature , you can change the size and color of pencil , erase ,undo redo , download the content ,and write text on sticky note.
 
 ## The Agile methodology
 
