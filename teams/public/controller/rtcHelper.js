@@ -93,7 +93,7 @@ class RTCHelper {
   };
   joinAllSocket(data) {
     data.forEach((element) => {
-      this.socket.emit("join", element.roomId);
+      this.socket.emit("reconnect", element.roomId);
     });
   }
 

@@ -38,6 +38,18 @@ mongoConnect(() => {
         socket.emit("joined");
       }
     });
+    socket.on("reconnect", function (roomName) {
+      let rooms = io.sockets.adapter.rooms;
+      let room = rooms.get(roomName);
+      if (room == undefined) {
+        socket.join(roomName);
+      } else if (room.size == 1) {
+        socket.join(roomName);
+      } else {
+        socket.join(roomName);
+        socket.emit("joined");
+      }
+    });
     socket.on("invite", (roomName, userName) => {
       socket.broadcast.to(roomName).emit("invite", userName, roomName);
     });

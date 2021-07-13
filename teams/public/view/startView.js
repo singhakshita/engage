@@ -18,13 +18,13 @@ class StartView extends MainView {
     });
     this._startChannelBtn.addEventListener("click", () => {
       const id = document.getElementById("startInput").textContent;
-      this.setChatPage(setChatPage);
       startHandler(id, true);
+      this.setChatPage(setChatPage);
     });
     this._joinChannelBtn.addEventListener("click", () => {
       const id = document.getElementById("joinInput").value;
-      this.setChatPage(setChatPage);
       startHandler(id, true);
+      this.setChatPage(setChatPage);
     });
   }
 

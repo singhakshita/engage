@@ -40,14 +40,16 @@ export const editData = (data) => {
   return data;
 };
 export const editMsg = (data) => {
-  data.messages.forEach((elem) => {
-    if (elem[0] == state.userName) {
-      elem[0] = "U";
-    } else {
-      elem[0] = "P";
-    }
-  });
-  return data;
+  if (data) {
+    data.messages.forEach((elem) => {
+      if (elem[0] == state.userName) {
+        elem[0] = "U";
+      } else {
+        elem[0] = "P";
+      }
+    });
+    return data;
+  }
 };
 export const signInStatus = async function (id, password) {
   const params = new URLSearchParams({ id: id, password: password });
