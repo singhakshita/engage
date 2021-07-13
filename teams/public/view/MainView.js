@@ -32,6 +32,8 @@ export default class MainView {
   _peerVideo = document.getElementById("peerVideo");
 
   _modal = document.querySelector(".modal");
+  _invite = document.querySelector(".invite");
+  _textContentOfInvite = document.querySelector(".text");
 
   removeClass(elem, className) {
     if (elem.classList.contains(className)) {
@@ -83,5 +85,9 @@ export default class MainView {
     setTimeout(() => {
       this.addClass(this._modal, "hidden");
     }, 5000);
+  }
+  showInvite(msg) {
+    this.removeClass(this._invite, "hidden");
+    this._textContentOfInvite.textContent = msg;
   }
 }

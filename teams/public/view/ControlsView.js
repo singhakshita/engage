@@ -5,9 +5,11 @@ class ControlsView extends MainView {
   _leaveButton = document.querySelector(".video__connect");
   _audioButton = document.querySelector(".video__audio");
   _infoButton = document.querySelector(".video__info");
+  _recordButton = document.querySelector(".video__record");
 
   _audioFlag = true;
   _videoFlag = true;
+  _recording = false;
 
   controlAudio(handler) {
     this._audioButton.addEventListener("click", () => {
@@ -31,6 +33,17 @@ class ControlsView extends MainView {
       } else {
         this._videoButton.style.backgroundImage =
           "url('../assets/videoOff.png')";
+      }
+    });
+  }
+  controlRecording(handler) {
+    this._recordButton.addEventListener("click", () => {
+      this._recording = !this._recording;
+      handler(this._recording);
+      if (this._recording) {
+        this._recordButton.style.backgroundImage = "url('../assets/stop.png')";
+      } else {
+        this._videoButton.style.backgroundImage = "url('../assets/start.png')";
       }
     });
   }

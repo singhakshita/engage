@@ -38,13 +38,19 @@ mongoConnect(() => {
         socket.emit("joined");
       }
     });
-
+    socket.on("invite", (roomName, userName) => {
+      socket.broadcast.to(roomName).emit("invite", userName, roomName);
+    });
+    socket.on("decline", (roomName, userName) => {
+      socket.broadcast.to(roomName).emit("decline", userName);
+    });
     socket.on("name", (roomName, userName) => {
       socket.broadcast.to(roomName).emit("name", userName);
       modal.addUser(userName, roomName);
     });
     socket.on("ready", function (roomName) {
       socket.broadcast.to(roomName).emit("ready");
+      console.log("ready");
     });
     socket.on("message", (msg, roomName, name) => {
       socket.broadcast.to(roomName).emit("message", msg, roomName);
@@ -52,14 +58,17 @@ mongoConnect(() => {
     });
     socket.on("candidate", function (candidate, roomName) {
       socket.broadcast.to(roomName).emit("candidate", candidate);
+      console.log("candidate");
     });
 
     socket.on("offer", function (offer, roomName) {
       socket.broadcast.to(roomName).emit("offer", offer);
+      console.log("offer");
     });
 
     socket.on("answer", function (answer, roomName) {
       socket.broadcast.to(roomName).emit("answer", answer);
+      console.log("answer");
     });
     socket.on("leave", (roomName) => {
       socket.broadcast.to(roomName).emit("leave");

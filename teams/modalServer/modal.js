@@ -4,14 +4,14 @@ const insertDataIntoAccounts = (data) => {
   const db = getDb();
   db.collection("accounts")
     .insertOne(data)
-    .then((res) => console.log("Inserted into accounts"))
+    .then((res) => console.log())
     .catch((err) => console.log(err));
 };
 const insertDataIntoUsers = (data) => {
   const db = getDb();
   db.collection("users")
     .insertOne(data)
-    .then((res) => console.log("inserted into users"))
+    .then((res) => console.log())
     .catch((err) => console.log(err));
 };
 const addAccounts = (id, password) => {
@@ -59,7 +59,7 @@ const userHandler = (arr, id, name) => {
         { roomId: id, peername: "Nobody has joined the channel yet" },
         { $set: { peername: name } }
       )
-      .then((res) => console.log("updated"))
+      .then((res) => console.log())
       .catch((err) => console.log(err));
   }
 };
@@ -77,7 +77,7 @@ const pushMsg = (id, name, msg) => {
   const db = getDb();
   db.collection("users")
     .update({ roomId: id }, { $push: { messages: [name, msg] } })
-    .then((res) => console.log("pushed msg"))
+    .then((res) => console.log())
     .catch((err) => console.log(err));
 };
 const fetchUserById = (id) => {
@@ -87,7 +87,6 @@ const fetchUserById = (id) => {
     .find({ roomId: id })
     .toArray()
     .then((arr) => {
-      console.log(arr);
       return arr;
     })
     .catch((err) => console.log(err));
@@ -99,7 +98,6 @@ const fetchUserByName = (name) => {
     .find({ $or: [{ username: name }, { peername: name }] })
     .toArray()
     .then((arr) => {
-      console.log(arr);
       return arr;
     })
     .catch((err) => console.log(err));

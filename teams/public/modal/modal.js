@@ -2,12 +2,13 @@ export const state = {
   signedIn: false,
   userName: "",
   id: null,
+  inviteRoomname: "",
   roomName: "",
   creator: false,
   userStream: null,
   peerName: "",
   allRooms: [],
-  state: false, //call = false chat = true;
+  state: true, //call = false chat = true;
   connected: "",
 };
 export const getRoomId = () => {
@@ -60,7 +61,6 @@ export const getAllRooms = async function () {
   const url = `http://localhost:3000/chats?${params.toString()}`;
   const res = await fetch(url);
   const data = await res.json();
-
   return data;
 };
 

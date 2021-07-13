@@ -12,6 +12,9 @@ class MessageView extends MainView {
   _joinCall = document.querySelector(".joincall");
   _StartCall = document.querySelector(".startcall");
 
+  _accept = document.querySelector(".accept");
+  _decline = document.querySelector(".decline");
+
   //chat button listner
   chatHeaderHandler(setPageHandler) {
     this._chatHeader.addEventListener("click", () => {
@@ -20,7 +23,7 @@ class MessageView extends MainView {
       this.addClass(this._chatHeader, "active");
     });
   }
-// displays all previous channel logs
+  // displays all previous channel logs
   displayChatCard(data) {
     if (data.length == 0) return;
     this._chatItems.innerHTML = "";
@@ -137,12 +140,25 @@ class MessageView extends MainView {
     this._StartCall.addEventListener("click", () => {
       const id = document.querySelector(".channelId").textContent;
       this.setMeetingPage();
-      callHandler(id, 0);  // 0: start call
+      callHandler(id, 0); // 0: start call
     });
     this._joinCall.addEventListener("click", () => {
       const id = document.querySelector(".channelId").textContent;
       this.setMeetingPage();
-      callHandler(id, 1);  // 1: for join call
+      callHandler(id, 1); // 1: for join call
+    });
+  }
+  acceptBtnListner(acceptHandler) {
+    this._accept.addEventListener("click", () => {
+      this.addClass(this._invite, "hidden");
+      this.setMeetingPage();
+      acceptHandler();
+    });
+  }
+  declineBtnListner(declineHandler) {
+    this._decline.addEventListener("click", () => {
+      this.addClass(this._invite, "hidden");
+      declineHandler();
     });
   }
 }

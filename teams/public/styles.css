@@ -24,6 +24,7 @@ body {
   border-radius: 16px;
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.9);
 }
+
 .header {
   width: 100vw;
   height: 4rem;
@@ -245,6 +246,9 @@ video {
 .video__info {
   background: url("./assets/info.png") no-repeat center/contain;
 }
+.video__record {
+  background: url("./assets/start.png") no-repeat center/contain;
+}
 .chat {
   background-color: #7b83eb;
   width: 30%;
@@ -435,6 +439,23 @@ video {
   align-items: center;
 }
 
+.invite {
+  height: 10rem;
+  background-color: #505ac9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.invite-btn {
+  display: flex;
+  justify-content: space-around;
+}
+.accept {
+  background-color: #71bc78;
+}
+.decline {
+  background-color: #ff033e;
+}
 .hidden {
   display: none;
 }

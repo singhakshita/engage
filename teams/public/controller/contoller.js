@@ -7,18 +7,19 @@ import startView from "../view/startView.js";
 import StartView from "../view/startView.js";
 import ControlsView from "../view/ControlsView.js";
 import MessageView from "../view/MessageView.js";
+import headerView from "../view/headerView.js";
 
 let socket;
 socket = rtcHelper.getSocket();
 
 // after socket conncetion is created
+// state = true = chat channel : name is emitted
+// state = false = video channel
 socket.on("created", () => {
-  // a
   if (modal.state.state) {
-    // state = true = chat channel : name is emitted
     socket.emit("name", modal.state.roomName, modal.state.userName);
   } else {
-    modal.state.creator = true; //state = false = video channel
+    modal.state.creator = true;
     StartView.setAudioVideoStream(rtcHelper.setUserStream, null);
   }
 });
@@ -30,13 +31,22 @@ socket.on("joined", () => {
       rtcHelper.setUserStream,
       rtcHelper.emitReadyEvent
     );
+    console.log("emitting ready");
   }
   socket.emit("name", modal.state.roomName, modal.state.userName);
 });
-// peer on ready
+socket.on("invite", (username, roomName) => {
+  HeaderView.showInvite(`${username} has requested you to join the call`);
+  modal.state.inviteRoomname = roomName;
+});
+socket.on("decline", (username) => {
+  headerView.showModal(`${username} declined your call`);
+});
+// peer on ready , the creator's name is emitted
 socket.on("ready", () => {
   rtcHelper.socketOnReady();
-  socket.emit("name", modal.state.roomName, modal.state.userName); // the creator's name is emitted
+  console.log("onready");
+  socket.emit("name", modal.state.roomName, modal.state.userName);
 });
 
 socket.on("name", (peerName) => {
@@ -46,14 +56,15 @@ socket.on("name", (peerName) => {
 // ICE candidates are shared
 socket.on("candidate", (candidate) => {
   rtcHelper.socketOnCandidate(candidate);
+  console.log("on candidate");
 });
-
 socket.on("offer", (offer) => {
   rtcHelper.socketOnOffer(offer);
+  console.log("on offer");
 });
-
 socket.on("answer", (answer) => {
   rtcHelper.socketOnAnswer(answer);
+  console.log("on answer");
 });
 socket.on("message", (msg, roomId) => {
   if (modal.state.state) {
@@ -72,27 +83,28 @@ const broadcastMessage = (msg, roomId) => {
   }
   socket.emit("message", msg, roomId, modal.state.userName);
 };
+const declineHandler = () => {
+  socket.emit("decline", modal.state.inviteRoomname, modal.state.userName);
+};
 
 const disconnectHandler = () => {
   socket.emit("leave", modal.state.roomName);
   modal.state.state = false;
 };
+//status : 0 : the person starts the call || 1: if person joins the call
 const callHandler = (id, status) => {
-  //status : 0 : the person starts the call || 1: if person joins the call
   modal.state.state = false;
   modal.state.roomName = id;
-  if (!modal.isConnected(id)) {
-    //if the socket is not already  connected
-    socket.emit("join", id);
-    getParticularData(id);
-    return;
-  }
+
   getParticularData(id); // gets previous chats and render it in the view
   if (status === 0) {
+    console.log("this is working");
     modal.state.creator = true;
+    socket.emit("invite", id, modal.state.userName);
     StartView.setAudioVideoStream(rtcHelper.setUserStream, null);
     StartView.setuserName(modal.state.userName);
   } else {
+    console.log("this is working");
     modal.state.creator = false;
     startView.setAudioVideoStream(
       rtcHelper.setUserStream,
@@ -101,6 +113,7 @@ const callHandler = (id, status) => {
     socket.emit("name", modal.state.roomName, modal.state.userName);
   }
 };
+
 // audio mute unmute
 const audioHandler = (isAudio) => {
   let audioMode = modal.state.userStream.getTracks()[0];
@@ -111,13 +124,24 @@ const videoHandler = (isVideo) => {
   let videoMode = modal.state.userStream.getTracks()[1];
   videoMode.enabled = isVideo;
 };
+const recordingHandler = (start) => {
+  if (start) {
+    rtcHelper.startRecording();
+  } else {
+    rtcHelper.stopRecording();
+  }
+};
+const acceptHandler = () => {
+  modal.state.creator = false;
+  modal.state.roomName = modal.state.inviteRoomname;
+  callHandler(modal.state.inviteRoomname, 1);
+};
 // start or join channel or call handler
 const startHandler = (id, isChat) => {
   modal.state.roomName = id;
   modal.state.state = isChat;
   modal.state.connected = id;
   socket.emit("join", modal.state.roomName);
-  console.log("emitting join");
   StartView.setuserName(modal.state.userName);
 };
 
@@ -160,6 +184,7 @@ const getSignedInStatus = (btn) => {
 const setChatPage = async function () {
   modal.state.state = true;
   let data = await modal.getAllRooms();
+  rtcHelper.joinAllSocket(data);
   data = modal.editData(data);
   modal.editMsg(data[data.length - 1]);
   MessageView.displayChatCard(data);
@@ -182,11 +207,14 @@ const init = () => {
   ControlsView.controlAudio(audioHandler);
   ControlsView.controlVideo(videoHandler);
   ControlsView.infoDisplay(modal.getRoomId);
+  ControlsView.controlRecording(recordingHandler);
   MessageView.sendMsg(broadcastMessage);
   ControlsView.userDisconnectHandler(disconnectHandler);
   MessageView.chatHeaderHandler(getSignedInStatus);
   MessageView.chatCardListner(getParticularData);
   MessageView.sendMsgViaChannel(broadcastMessage);
   MessageView.CallBtnListner(callHandler);
+  MessageView.acceptBtnListner(acceptHandler);
+  MessageView.declineBtnListner(declineHandler);
 };
 init();
