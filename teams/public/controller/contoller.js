@@ -16,14 +16,15 @@ socket = rtcHelper.getSocket();
 // state = true = chat channel : name is emitted
 // state = false = video channel
 socket.on("created", () => {
+  socket.emit("name", modal.state.roomName, modal.state.userName);
   if (!modal.state.state) {
     modal.state.creator = true;
     StartView.setAudioVideoStream(rtcHelper.setUserStream, null);
   }
-  socket.emit("name", modal.state.roomName, modal.state.userName);
 });
 //when someone joins the same room
 socket.on("joined", () => {
+  socket.emit("name", modal.state.roomName, modal.state.userName);
   if (!modal.state.state) {
     modal.state.creator = false;
     startView.setAudioVideoStream(
@@ -31,7 +32,6 @@ socket.on("joined", () => {
       rtcHelper.emitReadyEvent
     );
   }
-  socket.emit("name", modal.state.roomName, modal.state.userName);
 });
 
 socket.on("invite", (username, roomName) => {
@@ -44,7 +44,7 @@ socket.on("decline", (username) => {
 // peer on ready , the creator's name is emitted
 socket.on("ready", () => {
   rtcHelper.socketOnReady();
-  console.log("onready");
+  
   socket.emit("name", modal.state.roomName, modal.state.userName);
 });
 
@@ -55,15 +55,15 @@ socket.on("name", (peerName) => {
 // ICE candidates are shared
 socket.on("candidate", (candidate) => {
   rtcHelper.socketOnCandidate(candidate);
-  console.log("on candidate");
+  
 });
 socket.on("offer", (offer) => {
   rtcHelper.socketOnOffer(offer);
-  console.log("on offer");
+  
 });
 socket.on("answer", (answer) => {
   rtcHelper.socketOnAnswer(answer);
-  console.log("on answer");
+  
 });
 socket.on("message", (msg, roomId) => {
   if (modal.state.state) {
@@ -181,11 +181,11 @@ const getSignedInStatus = (btn) => {
 const setChatPage = async function () {
   modal.state.state = true;
   let data = await modal.getAllRooms();
-  rtcHelper.joinAllSocket(data);
   data = modal.editData(data);
-  console.log(data);
+  
   modal.editMsg(data[data.length - 1]);
   MessageView.displayChatCard(data);
+  rtcHelper.joinAllSocket(data);
 };
 //gets all chat info of particular room
 const getParticularData = async function (id) {

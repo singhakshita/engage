@@ -29,7 +29,10 @@ Prefinal Year Student of **Indira Gandhi Delhi Technical University For Women** 
 4. Mute audio feature
 5. camera on and off feature
 6. Meeting info option
-7. Meeting disconnect feature
+7. Meeting Record option
+8. Realtime whiteboard
+   - where you draw, erase, undo, redo, download the content, and write on sticky borad.
+9. Meeting disconnect feature
 
 ## packages and Librararies used:
 
@@ -39,6 +42,7 @@ Prefinal Year Student of **Indira Gandhi Delhi Technical University For Women** 
 4. socket.io and socket.io.client for establishing countinuious connection.
 5. mongodb for database
 6. heroku cli for hosting
+7. canvas for whiteboard
 
 ## The Project structure :
 
@@ -61,16 +65,20 @@ server side :
 - index.js : holds the server code.
 - modalServer : is the modal folder for the server , reacts with mongodb and feteches data.
 
+## the realtime whiteboard
+
+    this in itself is an extensive feature , you can change the size and color of pencil , erase  ,undo redo , download the content ,and write text on sticky note.
+
 ## The Agile methodology
 
 Breaking the project into delieverable chunks,
 
 1. creating a server and RTC connection so that two people can share audio video (completed the mandatory criteria).
 2. adding a id password interface ,UI for joining and starting the meet.
+   \_ adding video on off ,mute ,disconnect ,realtime white board ,record meeting
 3. chat feature that exists while the meeting is going.
    Adapt phase
 4. extended the chat feature to end call chat.
 5. added a text file database for the timebeing and stored user details and chats.
 6. implemented before call chat by giving option to start or join channel.
 7. adding **mongodb** database
- 

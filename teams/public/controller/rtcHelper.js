@@ -17,14 +17,10 @@ class RTCHelper {
   onIceCandidateFunc = (event) => {
     if (event.candidate) {
       this.socket.emit("candidate", event.candidate, modal.state.roomName);
-      console.log("emit candidate");
     }
   };
   socketOnReady = () => {
-    console.log("on ready function");
-
     if (modal.state.creator) {
-      console.log("on ready function");
       this.rtcPeerConnection = new RTCPeerConnection(modal.iceServers);
       this.rtcPeerConnection.onicecandidate = this.onIceCandidateFunc;
       this.rtcPeerConnection.ontrack = StartView.setPeerStream;
@@ -41,11 +37,8 @@ class RTCHelper {
         .then((offer) => {
           this.rtcPeerConnection.setLocalDescription(offer);
           this.socket.emit("offer", offer, modal.state.roomName);
-          console.log("emit offer");
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => {});
     }
   };
   socketOnCandidate = (candidate) => {
@@ -71,11 +64,8 @@ class RTCHelper {
         .then((answer) => {
           this.rtcPeerConnection.setLocalDescription(answer);
           this.socket.emit("answer", answer, modal.state.roomName);
-          console.log("emit answer");
         })
-        .catch((error) => {
-          console.log(error);
-        });
+        .catch((error) => {});
     }
   };
   socketOnAnswer = (answer) => {
@@ -89,7 +79,6 @@ class RTCHelper {
       id = modal.state.roomName;
     }
     this.socket.emit("ready", id);
-    console.log("emit ready", id);
   };
   joinAllSocket(data) {
     data.forEach((element) => {

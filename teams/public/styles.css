@@ -249,6 +249,14 @@ video {
 .video__record {
   background: url("./assets/start.png") no-repeat center/contain;
 }
+.video__whiteboard {
+  background: url("./assets/whiteboard.png") no-repeat center/contain;
+}
+.video__whiteboard a {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
 .chat {
   background-color: #7b83eb;
   width: 30%;

@@ -76,7 +76,7 @@ const addUser = (name, id) => {
 const pushMsg = (id, name, msg) => {
   const db = getDb();
   db.collection("users")
-    .update({ roomId: id }, { $push: { messages: [name, msg] } })
+    .updateOne({ roomId: id }, { $push: { messages: [name, msg] } })
     .then((res) => console.log())
     .catch((err) => console.log(err));
 };
